@@ -364,20 +364,4 @@ void neighbourfind_limited_boundary(vector<vector<int>>& neighbour,
     boundary_check(isboundary,neighbourfull,boundlimit);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #endif

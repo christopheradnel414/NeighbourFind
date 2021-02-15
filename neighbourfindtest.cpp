@@ -29,9 +29,9 @@ int main()
         }
     }
 
-    int Nxi = 3;
-    int Nyi = 3;
-    h = 2.33;
+    int Nxi = 10;
+    int Nyi = 10;
+    h = 1.0;
 
     int Ni = Nxi*Nyi;
 
@@ -53,7 +53,8 @@ int main()
     vector<vector<double>> range;
     vector<int> isboundary;
 
-    neighbourfind_limited_boundary(neighbour,range,isboundary,xi,yi,xj,yj,4.601*1.0,1.0,20,20);
+    //neighbourfind_limited_boundary(neighbour,range,isboundary,xi,yi,xj,yj,4.601*1.0,1.0,20,20);
+    neighbourfind_boundary(neighbour,range,isboundary,xi,yi,xj,yj,2.101*1.0,1.0,20);
 
     printcoordinates(xi,yi,neighbour);
 

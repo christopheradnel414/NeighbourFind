@@ -4,10 +4,14 @@
 
 using namespace std;
 
+void printcoordinates  (vector<double> x,
+                        vector<double> y,
+                        vector<vector<int>> neighbour);
+
 int main()
 {
-    int Nxj = 100;
-    int Nyj = 100;
+    int Nxj = 10;
+    int Nyj = 10;
     double h = 1.0;
 
     int Nj = Nxj*Nyj;
@@ -25,8 +29,8 @@ int main()
         }
     }
 
-    int Nxi = 20;
-    int Nyi = 20;
+    int Nxi = 3;
+    int Nyi = 3;
     h = 2.33;
 
     int Ni = Nxi*Nyi;
@@ -50,4 +54,23 @@ int main()
     vector<int> isboundary;
 
     neighbourfind_limited_boundary(neighbour,range,isboundary,xi,yi,xj,yj,4.601*1.0,1.0,20,20);
+
+    printcoordinates(xi,yi,neighbour);
+
+}
+
+void printcoordinates  (vector<double> x,
+                        vector<double> y,
+                        vector<vector<int>> neighbour)
+{
+    cout << "No." << "\t" << "x" << "\t" << "y"<< "\t" << "Nb_num" << "\t" <<"Neighbours" <<"\n";
+    for (int i = 0; i < x.size(); i++)
+    {
+        cout << i << "\t" << x[i] << "\t" << y[i]<< "\t" << neighbour[i].size() << "\t";
+        for (int j = 0; j < neighbour[i].size(); j++)
+        {
+            cout << neighbour[i][j] <<",";
+        }
+        cout << endl;
+    }
 }

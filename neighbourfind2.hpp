@@ -9,6 +9,8 @@
 
 using namespace std;
 
+///////////////////////Basic Functions/////////////////////
+
 void zip   (vector<int> sorted,
             vector<double> sorter,
             vector<pair<int,double>> &zipped)
@@ -188,7 +190,8 @@ void find_neighbours_grid  (vector<vector<int>>& neighbourfull,
                             vector<double> y_j,
                             vector<int> cellid_i,
                             vector<vector<int>> cell_particle_j,
-                            vector<int> cell_particle_num_j)
+                            vector<int> cell_particle_num_j,
+                            double rc)
 {
     int i_size = x_i.size();
 
@@ -198,17 +201,122 @@ void find_neighbours_grid  (vector<vector<int>>& neighbourfull,
     int nbi;
 
     vector<vector<int>> neighbourdata(i_size);
-    vector<int> isboundarytemp(i_size);
+    vector<vector<double>> rangedata(i_size); 
 
     vector<int> temp_neighbourdata;
     vector<double> temp_drdata;
+
+    for (int k = 0; k < i_size; k++)
+    {
+
+        temp_neighbourdata.clear();
+        temp_drdata.clear();
+
+        for (int i = 0; i < cellneighbour_num[cellid_i[k]]; i++)
+        {
+            
+            for (int j = 0; j < cell_particle_num_j[cellneighbour[cellid_i[k]][i]]; j++)
+            {
+                nbi = cell_particle_j[cellneighbour[cellid_i[k]][i]][j];
+                dx = x_j[nbi] - x_i[k];
+                dy = y_j[nbi] - y_i[k];
+                dr = sqrt(dx*dx + dy*dy);
+
+                if ((dr < rc) && k != nbi)
+                {
+                    temp_neighbourdata.push_back(nbi);
+                    temp_drdata.push_back(dr);
+                }
+            }
+        }
+
+        neighbourdata[k] = temp_neighbourdata;
+        rangedata[k] = temp_drdata;
+    }
+
+    neighbourfull = neighbourdata;
+    rangefull = rangedata;
 }
 
+void neighbour_limiting(vector<vector<int>>& neighbour,
+                        vector<vector<double>>& range,
+                        vector<vector<int>> neighbourfull,
+                        vector<vector<double>> rangefull,
+                        int neighbourlimit)
+{
+    int i_size = neighbourfull.size();
+
+    vector<vector<int>> neighbourdata(i_size);
+    vector<vector<double>> rangedata(i_size); 
+
+    vector<pair<int,double>> zipped;
+    vector<int> temp_neighbourdata;
+    vector<double> temp_drdata;
+    
+    for (int k = 0; k < i_size; k++)
+    {
+        temp_neighbourdata = neighbourfull[k];
+        temp_drdata = rangefull[k];
+
+        if (temp_neighbourdata.size() < neighbourlimit)
+        {
+            cout<<"Neighbour Search Error: Not enough neighbour"<<endl;
+            exit(EXIT_FAILURE);
+        }
+
+        zip(temp_neighbourdata,temp_drdata,zipped);
+
+        sort(begin(zipped), end(zipped), 
+        [&](const auto& a, const auto& b)
+        {
+            return a.second < b.second;
+        });
+
+        unzip(temp_neighbourdata,temp_drdata,zipped);
+        zipped.clear();
+
+        for (int i = 0; i < neighbourlimit; i++)
+        {
+            neighbourdata[k].push_back(temp_neighbourdata[i]);
+            rangedata[k].push_back(temp_drdata[i]);
+        }
+    }
+
+    neighbour = neighbourdata;
+    range = rangedata;
+}
+
+void boundary_check(vector<int>& isboundary,
+                    vector<vector<int>> neighbourfull,
+                    int boundlimit)
+{
+    int i_size = neighbourfull.size();
+
+    vector<int> isboundarytemp(i_size);
+
+    for (int k = 0; k < i_size; k++)
+    {
+        if (neighbourfull[k].size() < boundlimit)
+        {
+            isboundarytemp[k] = 1;
+        }
+        else
+        {
+            isboundarytemp[k] = 0;
+        }
+    }
+
+    isboundary = isboundarytemp;
+}
+
+///////////////////////////////////////////////////////////
 
 
 
-
-
+void neighbourfind_limited_boundary()
+{
+    
+}
 
 
 

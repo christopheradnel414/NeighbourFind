@@ -36,6 +36,7 @@ void create_grid   (vector<vector<int>>& cellneighbouroutput,
                     vector<double>& xendoutput,
                     vector<double>& ystartoutput,
                     vector<double>& yendoutput,
+                    int& Ncell,
                     vector<double> x,
                     vector<double> y,
                     double rc,
@@ -60,7 +61,7 @@ void create_grid   (vector<vector<int>>& cellneighbouroutput,
     int NcellX = ceil((x_max-x_min)/dX);
     int NcellY = ceil((y_max-y_min)/dY);
 
-    int Ncell = NcellX*NcellY;
+    Ncell = NcellX*NcellY;
 
     vector<vector<int>> cellneighbour(Ncell, vector<int> (9));
     vector<int> cellneighbour_num(Ncell);
@@ -151,9 +152,9 @@ void assign_grid   (vector<int>& cellidoutput,
                     vector<double> xend,
                     vector<double> ystart,
                     vector<double> yend,
-                    int Ncell,
-                    int part_num)
+                    int Ncell)
 {
+    int part_num = x.size();
     vector<int> cellid(part_num,-2);
     vector<vector<int>> cell_particle(Ncell);
     vector<int> cell_particle_num(Ncell);
@@ -177,16 +178,30 @@ void assign_grid   (vector<int>& cellidoutput,
     cell_particle_numoutput = cell_particle_num;
 }
 
-void find_neighbours_grid  (vector<vector<int>>& neighbourdata,
-                            vector<vector<double>>& rangedata,
+void find_neighbours_grid  (vector<vector<int>>& neighbourfull,
+                            vector<vector<double>>& rangefull,
+                            vector<vector<int>> cellneighbour,
+                            vector<int> cellneighbour_num,
                             vector<double> x_i,
                             vector<double> y_i,
                             vector<double> x_j,
                             vector<double> y_j,
                             vector<int> cellid_i,
-                            vector<int> cellid_j)
+                            vector<vector<int>> cell_particle_j,
+                            vector<int> cell_particle_num_j)
 {
+    int i_size = x_i.size();
 
+    double dx;
+    double dy;
+    double dr;
+    int nbi;
+
+    vector<vector<int>> neighbourdata(i_size);
+    vector<int> isboundarytemp(i_size);
+
+    vector<int> temp_neighbourdata;
+    vector<double> temp_drdata;
 }
 
 

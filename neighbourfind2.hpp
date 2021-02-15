@@ -177,6 +177,12 @@ void assign_grid   (vector<double> x,
     cell_particle_numoutput = cell_particle_num;
 }
 
+void find_neighbours_grid  (vector<double> x,
+                            vector<double> y,
+                            )
+{
+
+}
 
 
 

@@ -9,7 +9,7 @@
 
 using namespace std;
 
-///////////////////////Basic Functions/////////////////////
+//////////////////////////////////////////////////////////////Basic Functions//////////////////////////////////////////////////////////
 
 void zip   (vector<int> sorted,
             vector<double> sorter,
@@ -309,13 +309,59 @@ void boundary_check(vector<int>& isboundary,
     isboundary = isboundarytemp;
 }
 
-///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
-void neighbourfind_limited_boundary()
+void neighbourfind_limited_boundary(vector<vector<int>>& neighbour,
+                                    vector<vector<double>>& range,
+                                    vector<int>& isboundary,
+                                    vector<double> x_i,
+                                    vector<double> y_i,
+                                    vector<double> x_j,
+                                    vector<double> y_j,
+                                    double rc,
+                                    double h,
+                                    int neighbourlimit,
+                                    int boundlimit)
 {
+    // Dividing domain into grids
+    vector<vector<int>> cellneighbour;
+    vector<int> cellneighbour_num;
+    vector<double> xstart;
+    vector<double> xend;
+    vector<double> ystart;
+    vector<double> yend;
+    int Ncell;
+
+    vector<double> x_all = x_i;
+    x_all.insert(x_all.end(), x_j.begin(), x_j.end());
+    vector<double> y_all = y_i;
+    y_all.insert(y_all.end(), y_j.begin(), y_j.end());
+
+    create_grid(cellneighbour,cellneighbour_num,xstart,xend,ystart,yend,Ncell,x_all,y_all,rc,h);
+
+    // Assigning particles into grid
+    vector<int> cellid_i;
+    vector<vector<int>> cell_particle_i;
+    vector<int> cell_particle_num_i;
+    assign_grid(cellid_i,cell_particle_i,cell_particle_num_i,x_i,y_i,xstart,xend,ystart,yend,Ncell);
+
+    vector<int> cellid_j;
+    vector<vector<int>> cell_particle_j;
+    vector<int> cell_particle_num_j;
+    assign_grid(cellid_j,cell_particle_j,cell_particle_num_j,x_j,y_j,xstart,xend,ystart,yend,Ncell);
+
+    // Finding particle_i's neighbouring particle_j
+    vector<vector<int>> neighbourfull;
+    vector<vector<double>> rangefull;
+    find_neighbours_grid(neighbourfull,rangefull,cellneighbour,cellneighbour_num,x_i,y_i,x_j,y_j,cellid_i,cell_particle_j,cell_particle_num_j,rc);
+
+    // Limiting the maximum neighbouring particles
+    neighbour_limiting(neighbour,range,neighbourfull,rangefull,neighbourlimit);
     
+    // Boundary particles checking
+    boundary_check(isboundary,neighbourfull,boundlimit);
 }
 
 

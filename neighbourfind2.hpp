@@ -30,23 +30,23 @@ void unzip (vector<int> &sorted,
         }
 }
 
-void create_grid   (vector<double> xj,
-                    vector<double> yj,
-                    vector<vector<int>>& cellneighbouroutput,
+void create_grid   (vector<vector<int>>& cellneighbouroutput,
                     vector<int>& cellneighbour_numoutput,
                     vector<double>& xstartoutput,
                     vector<double>& xendoutput,
                     vector<double>& ystartoutput,
                     vector<double>& yendoutput,
+                    vector<double> x,
+                    vector<double> y,
                     double rc,
                     double h)
 {
-    int j_size = xj.size();
+    int size = x.size();
 
-    double xj_min = *min_element(xj.begin(),xj.end()) - 0.0000001;
-    double xj_max = *max_element(xj.begin(),xj.end()) + 0.0000001;
-    double yj_min = *min_element(yj.begin(),yj.end()) - 0.0000001;
-    double yj_max = *max_element(yj.begin(),yj.end()) + 0.0000001;
+    double x_min = *min_element(x.begin(),x.end()) - 0.0000001;
+    double x_max = *max_element(x.begin(),x.end()) + 0.0000001;
+    double y_min = *min_element(y.begin(),y.end()) - 0.0000001;
+    double y_max = *max_element(y.begin(),y.end()) + 0.0000001;
     
     double dY = 6.0*h; // Can be adjusted for efficiency
     double dX = 6.0*h; // Can be adjusted for efficiency
@@ -57,8 +57,8 @@ void create_grid   (vector<double> xj,
         cout << "WARNING: dY or dX is set lower than rc" << endl;
     }
 
-    int NcellX = ceil((xj_max-xj_min)/dX);
-    int NcellY = ceil((yj_max-yj_min)/dY);
+    int NcellX = ceil((x_max-x_min)/dX);
+    int NcellY = ceil((y_max-y_min)/dY);
 
     int Ncell = NcellX*NcellY;
 
@@ -125,10 +125,10 @@ void create_grid   (vector<double> xj,
             cellneighbour_num[counter1] = counter2;
 
             // Cell Starting and Ending Coordinates
-            xstart[counter1] = xj_min + i*dX;
-            xend[counter1] = xj_min + (i+1)*dX;
-            ystart[counter1] = yj_min + j*dY;
-            yend[counter1] = yj_min + (j+1)*dY;
+            xstart[counter1] = x_min + i*dX;
+            xend[counter1] = x_min + (i+1)*dX;
+            ystart[counter1] = y_min + j*dY;
+            yend[counter1] = y_min + (j+1)*dY;
 
             counter1 = counter1 + 1;
         }
@@ -142,11 +142,11 @@ void create_grid   (vector<double> xj,
     yendoutput = yend;
 }
 
-void assign_grid   (vector<double> x,
-                    vector<double> y,
-                    vector<int>& cellidoutput,
+void assign_grid   (vector<int>& cellidoutput,
                     vector<vector<int>>& cell_particleoutput,
                     vector<int>& cell_particle_numoutput,
+                    vector<double> x,
+                    vector<double> y,
                     vector<double> xstart,
                     vector<double> xend,
                     vector<double> ystart,
@@ -177,9 +177,14 @@ void assign_grid   (vector<double> x,
     cell_particle_numoutput = cell_particle_num;
 }
 
-void find_neighbours_grid  (vector<double> x,
-                            vector<double> y,
-                            )
+void find_neighbours_grid  (vector<vector<int>>& neighbourdata,
+                            vector<vector<double>>& rangedata,
+                            vector<double> x_i,
+                            vector<double> y_i,
+                            vector<double> x_j,
+                            vector<double> y_j,
+                            vector<int> cellid_i,
+                            vector<int> cellid_j)
 {
 
 }
